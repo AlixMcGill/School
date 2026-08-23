@@ -8,7 +8,7 @@ SRCS := $(shell find $(SRC_DIR) -name "*.cpp")
 OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
 TARGET := $(BUILD_DIR)/main
-LIBS := -lraylib -lGL -lm -lpthread -ldl -lrt
+#LIBS := -lraylib -lGL -lm -lpthread -ldl -lrt
 
 all: $(TARGET)
 
