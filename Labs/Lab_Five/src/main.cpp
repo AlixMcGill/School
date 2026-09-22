@@ -13,7 +13,12 @@ int main() {
 
     middleNum = nums.size() / 2;
 
-    cout << "Middle item: " << nums.at(middleNum) << endl;
+    if (nums.size() > 9) {
+        cout << "Too many numbers" << endl;
+    }
+    else {
+        cout << "Middle item: " << nums.at(middleNum) << endl;
+    }
 
     return 0;
 }
