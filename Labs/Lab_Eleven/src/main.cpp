@@ -1,4 +1,8 @@
+#include <cstddef>
+#include <fstream>
+#include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 int GetMonthAsInt(string month) {
@@ -32,8 +36,46 @@ int GetMonthAsInt(string month) {
 }
 
 int main () {
-	
-	// TODO: Read dates from input file, parse the dates to find the ones
-	//       in the correct format, and output to output file in m-d-yyyy format
+    string filePath = "docs/dates.txt";	
+    ifstream dateFile;
+    string oFilePath = "docs/newdates.txt";
+    ofstream oDateFile;
+    string tempMonth;
+    string tempDay;
+    string tempYear;
+    string tempString;
+    int monthInt;
+    vector<string> outputStrings;
+    
+    dateFile.open(filePath);
+    oDateFile.open(oFilePath);
+    
+    if (!dateFile.is_open()) {
+        cout << filePath << ": could not be opened" << endl;
+        return 1;
+    }
 
+    if (!oDateFile.is_open()) {
+        cout << oFilePath << ": could not be opened" << endl;
+        return 1;
+    }
+
+    while (!dateFile.eof()) {
+        getline(dateFile, tempString);
+        size_t spacePosition = tempString.find(' ');
+        size_t commaPosition = tempString.find(',');
+
+        if (spacePosition != string::npos && commaPosition != string::npos) {
+            tempMonth = tempString.substr(0, spacePosition);
+            tempDay = tempString.substr(spacePosition + 1, commaPosition - spacePosition - 1);
+            tempYear = tempString.substr(commaPosition + 2);
+
+            monthInt = GetMonthAsInt(tempMonth);
+            oDateFile << monthInt << "-" << tempDay << "-" << tempYear << endl;
+        }
+    }
+
+    dateFile.close();
+    oDateFile.close();
+    return 0;
 }
