@@ -1,46 +1,53 @@
 #include <iostream>
+#include <cstring>
+#include <fstream>
+#include <string>
+#include <vector>
+
+// Include any necessary libraries here.
+
 using namespace std;
 
-class Rectangle {
-public:
-   void SetSize(int heightVal, int widthVal) {
-      height = heightVal;
-      width = widthVal;
-   }
-   int GetArea() const;
-   int GetPerimeter() const;
-
-private:
-   int height;
-   int width;
-};
-
-int Rectangle::GetArea() const {
-   return height * width;
-}
-
-int Rectangle::GetPerimeter() const {
-   return (height * 2) * (width * 2);
-}
-
 int main() {
-   Rectangle myRectangle;
+   ifstream inputFile;
+   ofstream outputFile;
+   string filePath;
+   string checkString = "_photo.jpg";
+   string appendString = "_info.txt";
+   string tempString;
+   vector<string> augmententStrings;
 
-   myRectangle.SetSize(1, 1);
-   if (myRectangle.GetArea() != 1) {
-      cout << "FAILED GetArea() for 1, 1" << endl;
-   }
-   if (myRectangle.GetPerimeter() != 4) {
-      cout << "FAILED GetPerimeter() for 1, 1" << endl;
+   cin >> filePath;
+
+   inputFile.open(filePath);
+   if (!inputFile.is_open()) {
+      cout << filePath << ": Input file could not be opened" << endl;
+      return 1;
    }
 
-   myRectangle.SetSize(2, 3);
-   if (myRectangle.GetArea() != 6) {
-      cout << "FAILED GetArea() for 2, 3" << endl;
+   while (!inputFile.eof()) {
+      inputFile >> tempString;
+      size_t pos = tempString.find(checkString);
+      if (pos != string::npos) {
+         tempString.replace(pos, checkString.length(), appendString);
+         augmententStrings.push_back(tempString);
+         cout << "wrote: " << tempString << " to augmented" << endl;
+      }
    }
-   if (myRectangle.GetPerimeter() != 10) {
-      cout << "FAILED GetPerimeter() for 2, 3" << endl;
+
+   inputFile.close();
+
+   outputFile.open(filePath);
+   if (!outputFile.is_open()) {
+      cout << filePath << ": Output file could not be opened" << endl;
+      return 1;
    }
+
+   for (int i = 0; i < augmententStrings.size(); ++i) {
+      outputFile << augmententStrings.at(i) << endl;
+   }
+
+   outputFile.close();
 
    return 0;
 }
